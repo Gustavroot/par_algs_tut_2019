@@ -1,0 +1,7 @@
+#Specific Gaussian-Elimination algorithm
+#Possible values: {kij, kji, kji_opt}
+ge_alg = jki_opt
+
+#Dimensions of the matrix
+n = 512
+m = 512
