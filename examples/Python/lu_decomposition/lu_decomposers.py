@@ -1,9 +1,11 @@
 from scipy.linalg import lu
 import numpy as np
+import time
+
 from miscellaneous import resources_usage
 
 #Gateway to all LU decomposition implementations
-def lu_decomposer(ijk_form, M):
+def lu_decomposer(ijk_form, M, gpu_usage):
 
     m = M.shape[0]
     n = M.shape[1]
@@ -25,19 +27,26 @@ def lu_decomposer(ijk_form, M):
         return (N,p,l,u)
 
     elif ijk_form=="kij":
+        if gpu_usage: print("Turning GPU usage off for this ijk form")
         return kij_lu_decomposer(M)
 
     elif ijk_form=="kji":
+        if gpu_usage: print("Turning GPU usage off for this ijk form")
         return kji_lu_decomposer(M)
 
     elif ijk_form=="kji_opt":
+        if gpu_usage: print("Turning GPU usage off for this ijk form")
         return kji_lu_decomposer_opt(M)
 
     elif ijk_form=="ikj_opt":
+        if gpu_usage: print("Turning GPU usage off for this ijk form")
         return ikj_lu_decomposer_opt(M)
 
     elif ijk_form=="jki_opt":
-        return jki_lu_decomposer_opt(M)
+        if gpu_usage:
+            return jki_lu_decomposer_opt_gpu(M)
+        else:
+            return jki_lu_decomposer_opt(M)
 
     else:
         raise Exception('LU decomposer not known')
@@ -132,5 +141,13 @@ def jki_lu_decomposer_opt(M):
         for k in range(0,j):
             N[k+1:,j] -= N[k+1:,k] * N[k,j]
         N[j+1:,j] /= N[j,j]
+
+    return N
+
+
+#LU decomposition, no pivoting, no override of M, implemented on GPU
+def jki_lu_decomposer_opt_gpu(M):
+
+    raise Exception('GPU implementation under construction')
 
     return N

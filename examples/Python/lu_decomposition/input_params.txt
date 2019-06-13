@@ -1,5 +1,5 @@
 #Specific Gaussian-Elimination algorithm
-#Possible values: {kij, kji, kji_opt}
+#Possible values: {kij, kji, kji_opt, ikj_opt, jki_opt}
 ge_alg = jki_opt
 
 #Dimensions of the matrix

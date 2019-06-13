@@ -36,6 +36,8 @@ def check_necess_packs():
 
     packs_to_install = list()
 
+    #print "before"
+
     #Checking if NumPy installed
     try:
         import numpy
@@ -48,7 +50,11 @@ def check_necess_packs():
     except ImportError:
         packs_to_install.append("numpy")
 
+    #print "after"
+    #print packs_to_install
+
     if len(packs_to_install)>0:
-        print "The following packages need to be installed:"
-        print packs_to_install
+        print("")
+        print("The following packages need to be installed:")
+        print(packs_to_install)
         raise Exception('SOME PYTHON PACKS WERE NOT FOUND')
