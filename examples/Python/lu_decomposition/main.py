@@ -1,7 +1,10 @@
+#First of all, check necessary Python packages
+from miscellaneous import check_necess_packs
+check_necess_packs()
+
 import sys
 import numpy as np
 import time
-#from guppy import hpy
 
 from miscellaneous import read_inp_parms, init_random, resources_usage
 from test_bank import basic_test
@@ -21,18 +24,23 @@ m = int(inp_params['m'])
 
 #APPLY TESTS
 
+print
+print "Specs of the run:"
+print " ** dimensions of matrix = " + str(n) + "x" + str(m)
+print " ** algorithm used = " + algrthm
+
 start = time.time()
 basic_test(algrthm, n, m)
 end = time.time()
 
 print
 
-print "Total elapsed time: " + str(end-start)
+print "Total elapsed time (including tests): " + str(end-start)
 
 print
 print
 
-print "Some relevant information, on the underlying Numerical Libraries used by Numpy during this run:"
+print "Some relevant information, on the underlying Numerical Libraries used by Numpy (on your machine) during this run:"
 
 np.__config__.show()
 

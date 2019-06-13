@@ -8,6 +8,8 @@ def lu_decomposer(ijk_form, M):
     m = M.shape[0]
     n = M.shape[1]
 
+    if m!=n: raise Exception('Implementation of LU only valid here for square matrices')
+
     N = np.zeros((n,m))
 
     if ijk_form=="use_scipy":

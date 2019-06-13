@@ -31,3 +31,24 @@ def resources_usage(point=""):
     return '''%s: usertime=%s systime=%s mem=%s mb
            '''%(point,usage[0],usage[1],
                 (usage[2]*resource.getpagesize())/1000000.0 )
+
+def check_necess_packs():
+
+    packs_to_install = list()
+
+    #Checking if NumPy installed
+    try:
+        import numpy
+    except ImportError:
+        packs_to_install.append("numpy")
+
+    #Checking if SciPy installed
+    try:
+        import scipy
+    except ImportError:
+        packs_to_install.append("numpy")
+
+    if len(packs_to_install)>0:
+        print "The following packages need to be installed:"
+        print packs_to_install
+        raise Exception('SOME PYTHON PACKS WERE NOT FOUND')
