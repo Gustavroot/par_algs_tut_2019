@@ -5,3 +5,6 @@ ge_alg = jki_opt
 #Dimensions of the matrix
 n = 512
 m = 512
+
+#Toggle for GPU usage
+GPU_use = 0

@@ -16,9 +16,15 @@ inp_params = read_inp_parms()
 init_random()
 
 #Unpacking input params
-algrthm = inp_params['ge_alg']
-n = int(inp_params['n'])
-m = int(inp_params['m'])
+try:
+    algrthm = inp_params['ge_alg']
+    n = int(inp_params['n'])
+    m = int(inp_params['m'])
+    gpu_use = bool(int(inp_params['GPU_use']))
+except KeyError:
+    print
+    print "Missing one or more params for this run"
+    raise Exception(KeyError)
 
 #------------------------------------------
 
