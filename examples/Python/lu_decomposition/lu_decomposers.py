@@ -148,6 +148,31 @@ def jki_lu_decomposer_opt(M):
 #LU decomposition, no pivoting, no override of M, implemented on GPU
 def jki_lu_decomposer_opt_gpu(M):
 
-    raise Exception('GPU implementation under construction')
+    m = M.shape[0]
+    n = M.shape[1]
+
+    import pycuda.autoinit
+    import pycuda.gpuarray as gpuarray
+
+    from skcuda.cublas import cublasCreate, cublasDaxpy, cublasDscal, cublasDestroy
+    import skcuda.misc as misc
+
+    N_gpu = gpuarray.to_gpu(M)
+
+    h = cublasCreate()
+
+    for j in range(0,n):
+        for k in range(0,j):
+
+            #N[k+1:,j] = N[k+1:,j] - N[k+1:,k] * N[k,j]
+            cublasDaxpy(h, N_gpu[k+1:,k].size, -np.float64(N_gpu[k,j].get()), N_gpu[k+1:,k].gpudata, n, N_gpu[k+1:,j].gpudata, n)
+
+        #N[j+1:,j] /= N[j,j]
+        cublasDscal(h, N_gpu[j+1:,j].size, 1.0/np.float64(N_gpu[j,j].get()), N_gpu[j+1:,j].gpudata, n)
+
+    #Move from GPU to CPU
+    N = N_gpu.get()
+
+    cublasDestroy(h)
 
     return N
