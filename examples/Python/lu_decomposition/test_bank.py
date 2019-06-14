@@ -18,13 +18,13 @@ def basic_test(algrthm, n, m, gpu_usage):
     # ** with scipy first -- lu_mat2 stores L and U in the same matrix
     lu_mat2, p_scp, l_scp, u_scp = lu_decomposer("use_scipy", test_rand_mat, gpu_usage)
     end = time.time()
-    print("<Scipy LU> elapsed time: " + str(end-start))
+    print("<Scipy-wrapped LU> elapsed time: " + str(end-start))
 
     start = time.time()
     # ** then, perform LU decomposition with the chosen implementation
     lu_mat3 = lu_decomposer(algrthm, test_rand_mat, gpu_usage)
     end = time.time()
-    print("<" + algrthm + " LU> elapsed time: " + str(end-start))
+    print("<Our own " + algrthm + " LU> elapsed time: " + str(end-start))
 
     print("")
 

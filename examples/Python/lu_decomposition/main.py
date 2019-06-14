@@ -68,7 +68,6 @@ print("")
 print("")
 
 print("Some relevant information, on the underlying Numerical Libraries used by Numpy (on your machine) during this run:")
-
 np.__config__.show()
 
 #print resources_usage()

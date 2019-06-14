@@ -36,8 +36,6 @@ def check_necess_packs():
 
     packs_to_install = list()
 
-    #print "before"
-
     #Checking if NumPy installed
     try:
         import numpy
@@ -49,9 +47,6 @@ def check_necess_packs():
         import scipy
     except ImportError:
         packs_to_install.append("numpy")
-
-    #print "after"
-    #print packs_to_install
 
     if len(packs_to_install)>0:
         print("")
