@@ -1,11 +1,11 @@
 import numpy as np
 import resource
 
-def read_inp_parms():
+def read_inp_parms(filename):
 
     #Extracting params from input_params.txt
     inp_params = dict()
-    inp_file   = open("input_params.txt", "r")
+    inp_file   = open(filename, "r")
     for line in inp_file:
         if len(line)>1 and line[0]!='#':
             str_buf = line.split("=")
