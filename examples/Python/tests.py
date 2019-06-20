@@ -40,7 +40,8 @@ algos = ['kij', 'kij_opt', 'kji', 'kji_opt', 'ikj_opt', 'ijk_opt', 'jik_opt', 'j
 for alg in algos:
     print("----")
     #LUdecomp_algorithm = inp_params['ge_alg']
-    gpu_usage = inp_params['GPU_use']
+    # Do an appropriate cast for 'GPU_use': first into int, then bool
+    gpu_usage = bool(int(inp_params['GPU_use']))
     exec_time = A.computeLU(alg, gpu_usage)
     print("Exec time for LU using " + alg + ": " + str(exec_time))
     A.testLU()
