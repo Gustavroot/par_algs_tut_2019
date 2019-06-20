@@ -4,8 +4,8 @@
 ge_alg = jik_opt
 
 #Dimensions of the matrix
-n = 512
-m = 512
+n = 256
+m = 256
 
 #Toggle for GPU usage
 GPU_use = 0

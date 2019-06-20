@@ -17,7 +17,7 @@ from test_bank import basic_test
 #------------------------------------------
 
 #Init
-inp_params = read_inp_parms()
+inp_params = read_inp_parms("./input_params.txt")
 init_random()
 
 #Unpacking input params
@@ -33,19 +33,20 @@ except KeyError:
 
 #Further, if GPU usage is on, check for the necessary packs
 #Checking if PyCUDA and Scikit-CUDA installed
-packs_to_install = list()
-try:
-    import pycuda
-except ImportError:
-    packs_to_install.append("pycuda")
-try:
-    import skcuda
-except ImportError:
-    packs_to_install.append("scikit-cuda")
-if len(packs_to_install)>0:
-    print("The following packages need to be installed:")
-    print(packs_to_install)
-    raise Exception('SOME PYTHON PACKS WERE NOT FOUND')
+if gpu_usage:
+    packs_to_install = list()
+    try:
+        import pycuda
+    except ImportError:
+        packs_to_install.append("pycuda")
+    try:
+        import skcuda
+    except ImportError:
+        packs_to_install.append("scikit-cuda")
+    if len(packs_to_install)>0:
+        print("The following packages need to be installed:")
+        print(packs_to_install)
+        raise Exception('SOME PYTHON PACKS WERE NOT FOUND')
 
 #------------------------------------------
 

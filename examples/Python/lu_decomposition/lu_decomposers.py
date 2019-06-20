@@ -2,7 +2,16 @@ from scipy.linalg import lu
 import numpy as np
 import time
 
-from miscellaneous import resources_usage
+# Local dir
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
+dir_path += '/'
+
+import sys
+
+sys.path.append(dir_path + "../matrix/")
+
+#from matrix import Matrix
 
 """
 
@@ -23,6 +32,12 @@ on the host. Try to come up with a way to avoid this, possibilities:
 
 #Gateway to all LU decomposition implementations
 def lu_decomposer(ijk_form, M, gpu_usage):
+
+    # TODO: improve the logic in the following lines extracting usingMPI
+    usingMPI = False
+    if type(M) != np.ndarray:
+        usingMPI = M.usingMPI
+        M = M.mat
 
     m = M.shape[0]
     n = M.shape[1]
@@ -80,6 +95,13 @@ def lu_decomposer(ijk_form, M, gpu_usage):
     elif ijk_form=="jik_opt":
         if gpu_usage: print("Turning GPU usage off for this ijk form")
         return jik_lu_decomposer_opt(M)
+
+    elif ijk_form=="block_right_look_ge":
+        if gpu_usage: print("Turning GPU usage off for this ijk form")
+        if usingMPI:
+            raise Exception("Parallel blocked right-looking Gaussian Elimination currently unavailable.")
+        else:
+            return block_right_look_ge_sequential(M)
 
     elif ijk_form=="jki_opt":
         if gpu_usage:
@@ -365,3 +387,7 @@ def ijk_lu_decomposer_opt_gpu(M):
     cublasDestroy(h)
 
     return N
+
+
+def block_right_look_ge_sequential(M):
+    raise Exception("Blocked right-looking Gaussian Elimination under construction...")

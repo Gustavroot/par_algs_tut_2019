@@ -41,6 +41,10 @@ class Matrix:
         else:
             self.ny = params['ny']
 
+        # Unpacking more params
+        if 'usingMPI' in params:
+            self.usingMPI = params['usingMPI']
+
         # TODO: add more checks here for self.nx and self.ny
 
         self.isSquare = (self.nx == self.ny)
@@ -78,7 +82,7 @@ class Matrix:
         if self.measureTimings:
             exec_time = time.time()
 
-        self.matLU = lu_decomposer(algrthm, self.mat, gpu_usage)
+        self.matLU = lu_decomposer(algrthm, self, gpu_usage)
         self.wasLUApplied = True
 
         if self.measureTimings:

@@ -30,12 +30,13 @@ inp_params = read_inp_parms('lu_decomposition/input_params.txt')
 
 # Building the Matrix to use in tests
 params_matrix = dict()
-params_matrix['nx'] = 64
-params_matrix['ny'] = 64
+params_matrix['nx'] = 256
+params_matrix['ny'] = 256
 A = Matrix(params_matrix, 0)
 
 # Perform LU decomposition through multiple methods and check if correct
 # TODO: move these tests to perform Unit Tests
+#algos = ['kij', 'kij_opt', 'kji', 'kji_opt', 'ikj_opt', 'ijk_opt', 'jik_opt', 'jki_opt', 'block_right_look_ge']
 algos = ['kij', 'kij_opt', 'kji', 'kji_opt', 'ikj_opt', 'ijk_opt', 'jik_opt', 'jki_opt']
 for alg in algos:
     print("----")
