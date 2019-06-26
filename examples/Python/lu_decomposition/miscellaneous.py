@@ -46,7 +46,7 @@ def check_necess_packs():
     try:
         import scipy
     except ImportError:
-        packs_to_install.append("numpy")
+        packs_to_install.append("scipy")
 
     if len(packs_to_install)>0:
         print("")
