@@ -1,6 +1,8 @@
 from scipy.linalg import lu
 import numpy as np
 import time
+from math import ceil
+from scipy.linalg import solve_triangular
 
 # Local dir
 import os
@@ -37,6 +39,7 @@ def lu_decomposer(ijk_form, M, gpu_usage):
     usingMPI = False
     if type(M) != np.ndarray:
         usingMPI = M.usingMPI
+        nb = M.nb
         M = M.mat
 
     m = M.shape[0]
@@ -85,6 +88,9 @@ def lu_decomposer(ijk_form, M, gpu_usage):
             return ikj_lu_decomposer_opt_gpu(M)
         else:
             return ikj_lu_decomposer_opt(M)
+
+    elif ijk_form=="ijk_blocked_opt":
+        return ikj_lu_decomposer_blocked_opt(M, nb)
 
     elif ijk_form=="ijk_opt":
         if gpu_usage:
@@ -389,5 +395,30 @@ def ijk_lu_decomposer_opt_gpu(M):
     return N
 
 
-def block_right_look_ge_sequential(M):
-    raise Exception("Blocked right-looking Gaussian Elimination under construction...")
+def ikj_lu_decomposer_blocked_opt(A, nb):
+
+    n = A.shape[1]
+    if (n/nb - int(n/nb)) != 0:
+        raise Exception("Only supporting nb dividing the matrix dims exactly.")
+
+    N = ceil(n / nb)
+    M = np.copy(A)
+
+    # Recursive decomposition
+    for i in range(N):
+
+        # Apply an LU decomposition to the ii block matrix
+        M[i*nb:(i+1)*nb, i*nb:(i+1)*nb] = jik_lu_decomposer_opt(M[i*nb:(i+1)*nb, i*nb:(i+1)*nb])
+
+        # Apply _TRSM to solve lower part of block column
+        mrhs = M[(i+1)*nb:, i*nb:(i+1)*nb].transpose()
+        sol = solve_triangular(M[i*nb:(i+1)*nb, i*nb:(i+1)*nb], mrhs, trans=1)
+        M[(i+1)*nb:, i*nb:(i+1)*nb] = sol.transpose()
+
+        # Apply _TRSM to solve right part of block row
+        M[i*nb:(i+1)*nb, (i+1)*nb:] = solve_triangular(M[i*nb:(i+1)*nb, i*nb:(i+1)*nb], M[i*nb:(i+1)*nb, (i+1)*nb:], lower=True, unit_diagonal=1)
+
+        # Prepare the rest of the block matrix for recursive computation of LU
+        M[(i+1)*nb:, (i+1)*nb:] -= np.dot(M[(i+1)*nb:, i*nb:(i+1)*nb], M[i*nb:(i+1)*nb, (i+1)*nb:])
+
+    return M

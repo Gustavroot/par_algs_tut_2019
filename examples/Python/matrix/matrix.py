@@ -31,6 +31,7 @@ class Matrix:
         self.blockedStorage = False
         self.verbosity = "FULL"
         self.measureTimings = True
+        self.nb = 1
 
         if 'nx' not in params:
             raise Exception("Dimension nx of the matrix is needed.")
@@ -44,6 +45,9 @@ class Matrix:
         # Unpacking more params
         if 'usingMPI' in params:
             self.usingMPI = params['usingMPI']
+        # This param will be used in the case of blocked LU decomposition
+        if 'nb' in params:
+            self.nb = params['nb']
 
         # TODO: add more checks here for self.nx and self.ny
 

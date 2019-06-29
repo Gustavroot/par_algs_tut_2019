@@ -1,11 +1,12 @@
 #Specific Gaussian-Elimination algorithm
-#Possible values for <ge_alg> (i.e. possible algorithms): {kij, kij_opt, kji, kji_opt, ikj_opt, ijk_opt, jik_opt, jki_opt}
+#Possible values for <ge_alg> (i.e. possible algorithms): {kij, kij_opt, kji, kji_opt, ikj_opt, ijk_opt, jik_opt, jki_opt, ijk_blocked_opt}
 
-ge_alg = jik_opt
+ge_alg = ijk_blocked_opt
 
 #Dimensions of the matrix
-n = 256
-m = 256
+n = 1024
+m = 1024
+nb = 4
 
 #Toggle for GPU usage
 GPU_use = 0
